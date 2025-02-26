@@ -1,0 +1,310 @@
+---
+title: "Class08Lab"
+author: Nancy Leon-Rivera
+format: pdf
+toc: true
+---
+# Save your input data file into your Project directory
+```{r}
+fna.data <- "WisconsinCancer.csv"
+
+```
+
+# Complete the following code to input the data and store as wisc.df
+```{r}
+wisc.df <- read.csv("WisconsinCancer.csv", row.names=1)
+head(wisc.df)
+```
+>Q. How many samples/patients are in this dataset?
+
+There are `r nrow(wisc.df)` samples in this dataset
+
+>Q. How many cancer/non-cancer diagnosis samples are in this dataset?
+
+```{r}
+Diagnosis <- wisc.df$diagnosis=="M"
+
+sum(Diagnosis)
+```
+
+
+The `table()` function is a super useful utility for counting up the number of observations for each type.
+
+```{r}
+table(wisc.df$diagnosis)
+```
+
+>Q. How amny columns/dimensions are there?
+
+```{r}
+ncol(wisc.df)
+```
+
+
+>Q. How many columns are suffixed with "_mean"?
+
+```{r}
+colnames(wisc.df)
+```
+The `grep()` function can help us findpattern amtches here:
+
+```{r}
+length(grep("_mean", colnames(wisc.df)))
+
+```
+
+## Tidy to remove diagnosis
+```{r}
+#Save the vector of this expert diagnosis for later and remove it from the sata to undergo clustering PCA...
+
+diagnosis <- wisc.df$diagnosis
+```
+
+```{r}
+#instead of remove the column you create a new data with the diagnosis data removed
+wisc.data <- wisc.df[ ,-1]
+```
+
+
+
+##Cluster the dataset
+
+
+Let's try `hclust`.
+```{r}
+hc.raw <- hclust(dist(wisc.data))
+plot(hc.raw)
+
+```
+
+TO get some clusters out of this I can "cut" the tree at given height:
+
+```{r}
+grps <- cutree(hc.raw, h=4000)
+table(grps)
+```
+
+To see the correspondence of our cluster groups `grps` with the expert `diagnosis` I can use table():
+
+```{r}
+table(grps, diagnosis)
+```
+That is not that useful a clustering result...
+
+##PCA should now be the first step for data analysis
+##Principal Component Analysis (PCA)
+
+Scaling data before analysis is often critical. 
+
+Side-note: The default for `prcomp()` is `scale=FALSE`.
+
+There's a data set in R called `mtcar` which has loads of numbers about old cars. 
+
+```{r}
+head(mtcars)
+
+```
+
+```{r}
+colMeans(mtcars)
+```
+
+```{r}
+apply(mtcars, 2, sd)
+```
+
+```{r}
+pc.noscale <- prcomp(mtcars, scale=F)
+pc.scale <- prcomp(mtcars, scale=T)
+```
+
+Let's look at the loadings first:
+
+```{r}
+pc.noscale$rotation
+
+```
+
+
+```{r}
+library(ggplot2)
+ggplot(pc.noscale$rotation) +aes(PC1, rownames(pc.noscale$rotation)) +
+  geom_col()
+
+
+```
+```{r}
+ggplot(pc.scale$rotation) +aes(PC1, rownames(pc.noscale$rotation)) +
+  geom_col()
+```
+
+The main PC result figure is often called a "score plot" or "PC plot" etc...
+
+
+```{r}
+ggplot(pc.noscale$x) + 
+  aes(PC1, PC2, label =rownames(pc.noscale$x)) + geom_point() + geom_label()
+```
+##This is what scaleing does 
+```{r}
+x <-  scale(mtcars)
+round(colMeans(x))
+round(apply(x,2,sd))
+```
+
+
+
+>**Key point:** Generally we want to "scale" our data before analysis to avoid being mis-lead due to your data having different measurment units.
+
+##Breast Cancer PC
+
+We will scale our data.
+
+```{r}
+pca <- prcomp(wisc.data, scale =T)
+#if means and stdev are different scale data
+```
+See how well we are doing:
+```{r}
+summary(pca)
+```
+
+Our PC plot
+
+```{r}
+ggplot(pca$x) +aes(PC1,PC2, col=diagnosis) +
+  geom_point() + xlab("PC1 (44.3%)") +
+  ylab("PC2 (18.9%")
+
+```
+
+
+>Q. How many PCs capture 80% of the original variance in the dataset?
+
+```{r}
+summary(pca)
+##PC5
+```
+
+
+>Q. Use ggplot to plot a "screen-plot" of the variance per PC.
+
+```{r}
+#can use stdev as vairance
+attributes(pca)
+
+
+
+```
+We can extract stdev and figure out the total variance
+```{r}
+v <- pca$sdev^2
+sum(v)
+```
+
+The proportion of variance captured in each PC
+
+
+```{r}
+round(v/sum(v),2)
+```
+
+Cummulative variance captured 
+
+```{r}
+which(cumsum(v/sum(v)) >0.8)[1]
+```
+
+
+```{r}
+library(factoextra)
+fviz_eig(pca, addlabels = TRUE)
+
+```
+
+##Combine PCA and clustering 
+We caw earlier that clustering the raw data alone did not provide useful results.
+
+We can use our new PC variables (our PCs) as a basis for clustering. Use our `$x` PC scores and cluster in the PC1-2 subspace
+
+
+```{r}
+hc.pca <- hclust(dist(pca$x[,1:2]), method="ward.D2")
+plot(hc.pca)
+abline(h=60, col="blue")
+```
+
+>Q. Does your clustering help seperate cancer from on-cancer samples (i.e. diagnosis "M vsB"?
+
+```{r}
+mb.grps <- cutree(hc.pca, h=60)
+table(mb.grps)
+table(mb.grps, diagnosis)
+```
+```{r}
+table(diagnosis)
+```
+
+Positive cancer samples "M"
+Negative non-cancer samples "B"
+
+True our cluster/grp 1
+False our cluster/grp 2
+
+>Q. How many true positive do we have?
+
+```{r}
+
+```
+
+
+
+
+>Q. How many false positive do we have?
+
+```{r}
+
+```
+
+
+
+Sensitivity How many of the positives did we get right. TP/(TP+FN)
+
+ TN/(TN+FN)
+ 
+ ##Prediction with our PCA Model
+ 
+ We can take new data(in this case from UofM) and project it onto our new variables (PCs).
+ 
+ Readd the UofM data first 
+```{r}
+url <- "new_samples.csv"
+url <- "https://tinyurl.com/new-samples-CSV"
+new <- read.csv(url)
+#Projection
+npc <- predict(pca, newdata=new)
+npc
+```
+ Base R plot
+```{r}
+plot(pca$x[,1:2], col=mb.grps)
+##Add the new points
+
+points(npc[,1], npc[,2], col="blue", pch=16, cex=3)
+text(npc[,1], npc[,2], c(1,2), col="red")
+
+
+```
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

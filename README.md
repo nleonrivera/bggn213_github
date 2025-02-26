@@ -13,7 +13,7 @@ Winter 2025 class content:
 
 - Class 10 [Project] (https://github.com/nleonrivera/bggn213_github/blob/main/class10/class%2010.Rproj)
 
-- CLass 11 [PDF](https://github.com/nleonrivera/bggn213_github/blob/main/class12/Class11_genomics_lab.pdf)
+- CLass 11 [PDF] (https://github.com/nleonrivera/bggn213_github/blob/main/class12/Class11_genomics_lab.pdf)
 
 - Class 12 [Project] (https://github.com/nleonrivera/bggn213_github/blob/main/class12/class%2012.Rproj)
 

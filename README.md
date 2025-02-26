@@ -9,5 +9,5 @@ Winter 2025 class content:
 - Class 05 Data visualization with ggplot2
 
 - Class 08 [PDF] (https://github.com/nleonrivera/bggn213_github/blob/main/Class08/Class08lab.pdf)
-
+ - 
 

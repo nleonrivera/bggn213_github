@@ -1,0 +1,95 @@
+---
+title: "P53 AlphaFold Analysis"
+format: html
+
+---
+
+```{r}
+library(bio3d)
+
+```
+PDB file names of my P53 models
+```{r}
+p53_files <- list.files("hiv_dimer_f96df/", pattern = ".pdb", full.names = T)
+p53_files
+```
+
+#Align and superimpose
+```{r}
+p53_pdbs <- pdbaln(p53_files, fit = TRUE, exefile="msa")
+
+```
+
+RMSD analysis
+
+```{r}
+p53_rd <- rmsd(p53_pdbs)
+mean(p53_rd)
+```
+
+```{r}
+source("http://tinyurl.com/newviewngl")
+library(NGLVieweR)
+view.pdbs(p53_pdbs)
+```
+
+
+
+##PCA
+
+
+
+```{r}
+p53_pc <- pca(p53_pdbs)
+  plot(p53_pc)
+```
+
+
+
+#Residues conservation from alignment file
+
+AlphaFold writes out the MSA it calcualted 
+```{r}
+p53_aln_file <- list.files(path="hiv_dimer_f96df/", pattern = ".a3m$", full.names = TRUE)
+p53_aln_file
+```
+
+
+```{r}
+aln_p53 <- read.fasta(p53_aln_file, to.upper=T)
+```
+
+
+
+```{r}
+dim(aln_p53$ali)
+```
+
+```{r}
+sim_p53 <- conserv(aln_p53)
+
+```
+
+
+```{r}
+con_p53 <- consensus(aln_p53, cutoff = 0.9)
+con_p53$seq
+```
+
+```{r}
+plot(sim_p53, type ="h")
+
+```
+
+
+
+```{r}
+pdb <- read.pdb( p53_files[1])
+view.pdb(pdb, backgroundColor = "pink", highlight = atom.select(pdb, resno=25:28), highlight.style = "spacefill")
+```
+
+
+
+
+
+

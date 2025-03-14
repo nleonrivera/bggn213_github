@@ -1,0 +1,114 @@
+---
+title: "Cancer Mutation Analysis"
+author: "Nancy Leon-Rivera A12925462"
+format: html
+---
+
+
+
+>Q1. [1pt] What protein do these sequences correspond to? (Give both full gene/protein name
+and official symbol).
+
+read an FA file
+```{r}
+library(bio3d)
+# Read in the file with the sequence
+seqs <- read.fasta("A12925462_mutant_seq.fa")
+
+```
+
+```{r}
+
+
+score <- conserv(seqs)
+
+# Identify positions where the sequences differ
+inds <- which(score != 1)  # Find non-conserved positions
+
+# Extract mutations
+wt_residues <- seqs$ali[1, inds]  # Wild-type residues
+mut_residues <- seqs$ali[2, inds]  # Mutant residues
+positions <- inds  # Positions of mutations
+
+# Format mutations in the A130V style
+mutations <- paste0(wt_residues, positions, mut_residues)
+
+print(mutations)
+```
+
+
+```{r}
+attributes(seqs)
+```
+```{r}
+score <- conserv(seqs)
+```
+
+```{r}
+inds <- score!=1
+
+```
+
+```{r}
+positions <- which(inds)
+```
+Now I want format A
+```{r}
+seqs$ali
+```
+
+```{r}
+one <- paste(seqs$ali[1, positions],
+positions, sep="")
+
+two <- paste(seqs$ali[2, positions],
+positions, sep="")
+
+paste(one, two, sep=" ")
+
+```
+
+
+
+
+
+```{r}
+seq1 <- read.fasta("A12652928_mutant_seq.fa")
+score1 <- conserv(seq1)
+inds1 <- score1!=1
+positions1 <- which(inds1)
+paste(seq1$ali[1, positions1],positions1, seq1$ali[2, positions1],positions1, sep="", collapse =NULL, recycle0 = F)
+```
+
+
+```{r}
+
+one1 <- paste(seq1$ali[1, positions1], positions1,sep="")
+two1 <- paste(seq1$ali[2, positions1],positions1, sep="")
+paste(one1, two1, sep=" ")
+
+```
+
+
+
+
+
+>Q6. [3pts] List one RCSB PDB identifier with 100% identity to the wt_healthy sequence
+and detail the percent coverage of your query sequence for this known structure? Alternately,
+provide the most similar in sequence PDB structure along with it’s percent identity, coverage
+and E-value. Does this structure “cover” (i.e. include or span the amino acid residue positions)
+of your previously identified tumor specific mutations?
+
+```{r}
+library(bio3d)
+
+```
+
+
+
+
+
+
+
+
+

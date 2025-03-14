@@ -1,0 +1,154 @@
+---
+title: "Class17"
+author: "Nancy Leon-Rivera PID A12925462"
+format: pdf
+---
+
+# Downstream analysis
+
+```{r}
+folders <- list.files(pattern = "_quant")
+files <- paste0(folders, "/abundance.h5")
+
+```
+
+```{r}
+file.exists(files)
+```
+Can also use the following to check if the files exist:
+
+```{r}
+#BiocManager::install("tximport")
+# Load the package
+library(rhdf5)
+library(tximport)
+
+# setup the folder and filenames to read
+folders <- list.files(pattern = "_quant")
+files <- file.path(folders, "/abundance.h5")
+
+txi.kallisto <- tximport(files, type = "kallisto", txOut = TRUE)
+```
+
+
+
+
+```{r}
+names(files) <- sub("_quant", "", folders)
+files
+
+```
+
+Load up the tximport library
+
+
+
+```{r}
+library(tximport)
+
+txi.kallisto <- tximport(files, type = "kallisto", txOut = T)
+```
+
+
+```{r}
+head(files)
+head(txi.kallisto$counts)
+```
+
+# Remove zero count genes 
+
+Before subsequent analysis, we might want to filter out those annotated transcripts with no reads:
+```{r}
+to.keep <- rowSums(txi.kallisto$counts) > 0
+kset.nonzero <- txi.kallisto$counts[to.keep,]
+```
+
+```{r}
+nrow(kset.nonzero)
+```
+Or can use:
+
+```{r}
+sum(rowSums(txi.kallisto$counts)>0)
+```
+
+
+```{r}
+colSums(txi.kallisto$counts)
+```
+
+And those with no change over the samples:
+
+```{r}
+keep2 <- apply(kset.nonzero,1,sd)>0
+x <- kset.nonzero[keep2,]
+```
+
+
+# Try a PCA
+
+```{r}
+pca <- prcomp(t(x), scale=T)
+summary(pca)
+```
+
+
+```{r}
+library(ggplot2)
+library(ggrepel)
+mycols <- c("blue","blue", "red", "red")
+ggplot(pca$x)+
+         aes(PC1, PC2)+
+         geom_point(col=mycols)+
+  geom_label_repel(label=rownames(pca$x), col=mycols)
+```
+ 
+
+```{r}
+mycols <- c("blue","blue", "red", "red")
+ggplot(pca$x)+
+         aes(PC1, PC3)+
+         geom_point(col=mycols)+
+  geom_label_repel(label=rownames(pca$x), col=mycols)
+```
+
+```{r}
+
+mycols <- c("blue","blue", "red", "red")
+ggplot(pca$x)+
+         aes(PC2, PC3)+
+         geom_point(col=mycols)+
+  geom_label_repel(label=rownames(pca$x), col=mycols)
+```
+```{r}
+mycols <- c("blue","blue", "red", "red")
+ggplot(pca$x)+
+         aes(PC3, PC4)+
+         geom_point(col=mycols)+
+  geom_label_repel(label=rownames(pca$x), col=mycols)
+```
+
+# DESeq
+
+```{r}
+library(DESeq2)
+
+sampleTable <- data.frame(condition = factor(rep(c("control", "treatment"), each = 2)))
+rownames(sampleTable) <- colnames(txi.kallisto$counts)
+
+sampleTable
+
+```
+
+```{r}
+dds <- DESeqDataSetFromTximport(txi.kallisto,
+                                sampleTable, 
+                                ~condition)
+```
+
+```{r}
+dds <- DESeq(dds)
+res <- results(dds)
+res
+```
+

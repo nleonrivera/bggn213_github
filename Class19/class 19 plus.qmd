@@ -1,0 +1,18 @@
+---
+title: "Lab"
+format: html
+---
+
+```{r}
+install.packages("bio3d")
+library(bio3d)
+seqs <- read.fasta("A12925462_mutant_seq.fa")
+
+
+# Perform BLAST search
+blast_result <- blast.pdb(seqs)
+
+# View the results
+print(blast_result)
+```
+

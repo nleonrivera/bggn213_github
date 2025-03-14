@@ -15,7 +15,7 @@ Winter 2025 class content:
 
 - Class 09 [Halloween Candy Mini Project](https://github.com/nleonrivera/bggn213_github/blob/main/class09/class09.pdf)
 
-- Class 10 [Structural Bioinformatics](https://github.com/nleonrivera/bggn213_github/blob/main/class10/class%2010.Rproj)
+- Class 10 [Structural Bioinformatics](https://github.com/nleonrivera/bggn213_github/blob/main/class10/Class10.pdf)
 
 - Class 11 [Genomic Informatics](https://github.com/nleonrivera/bggn213_github/blob/main/class12/Class11_genomics_lab.pdf)
 

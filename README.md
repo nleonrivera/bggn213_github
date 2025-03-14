@@ -25,11 +25,11 @@ Winter 2025 class content:
 
 - Class 14 [RNA-Seq analysis mini-project](https://github.com/nleonrivera/bggn213_github/blob/main/class13/Class-14.pdf)
 
-- Class 17 [Analyzing sequencing data in the cloud]
+- Class 17 [Analyzing sequencing data in the cloud](https://github.com/nleonrivera/bggn213_github/tree/main/class17)
 
-- Class 18 [Investigating pertussis resurgence mini project]
+- Class 18 [Investigating pertussis resurgence mini project](https://github.com/nleonrivera/bggn213_github/tree/main/Class18)
 
-- Class 19 [Mini Project: Cancer Mutation Analysis]
+- Class 19 [Mini Project: Cancer Mutation Analysis](https://github.com/nleonrivera/bggn213_github/tree/main/Class19)
 
 
 

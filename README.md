@@ -21,13 +21,13 @@ Winter 2025 class content:
 
 - Class 12 [AlphaFold2 - Structure Predictions](https://github.com/nleonrivera/bggn213_github/blob/main/class12/class%2012.Rproj)
 
-- Class 13 [Transcriptomics and the analysis of RNA-Seq data](https://github.com/nleonrivera/bggn213_github/blob/main/class13/class13-lab.pdf)
+- Class 13 [Transcriptomics and Analysis of RNA-Seq Data](https://github.com/nleonrivera/bggn213_github/blob/main/class13/class13-lab.pdf)
 
-- Class 14 [RNA-Seq analysis mini-project](https://github.com/nleonrivera/bggn213_github/blob/main/class13/Class-14.pdf)
+- Class 14 [RNA-Seq Analysis Mini-Project](https://github.com/nleonrivera/bggn213_github/blob/main/class13/Class-14.pdf)
 
-- Class 17 [Analyzing sequencing data in the cloud](https://github.com/nleonrivera/bggn213_github/tree/main/class17)
+- Class 17 [Analyzing Sequencing Data in the Cloud](https://github.com/nleonrivera/bggn213_github/tree/main/class17)
 
-- Class 18 [Investigating pertussis resurgence mini project](https://github.com/nleonrivera/bggn213_github/tree/main/Class18)
+- Class 18 [Investigating Pertussis Resurgence Mini-Project](https://github.com/nleonrivera/bggn213_github/tree/main/Class18)
 
 - Class 19 [Mini Project: Cancer Mutation Analysis](https://github.com/nleonrivera/bggn213_github/tree/main/Class19)
 

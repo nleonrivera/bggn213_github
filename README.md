@@ -1,5 +1,5 @@
 # Nancy Leon-Rivera's Portfolio
-My Project Work from [BGGN213](https://bioboot.github.io/bggn213_W25/schedule/#15) at UC San Diego.
+My Work from [BGGN213](https://bioboot.github.io/bggn213_W25/schedule/#15) at UC San Diego.
 
 
 Winter 2025 Project Content:
